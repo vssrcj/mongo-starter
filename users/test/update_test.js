@@ -5,13 +5,13 @@ describe('Updating record', () => {
    let joe;
 
    beforeEach(async () => {
-      joe = new User({ name: 'Joe', postCount: 0 });
+      joe = new User({ name: 'Joe' });
       await joe.save();
    });
 
    afterEach(async () => {
       const users = await User.find();
-      
+
       assert(users.length === 1);
       assert(users[0].name === 'Alex');
    });
@@ -38,18 +38,14 @@ describe('Updating record', () => {
    });
 });
 
-describe('Updating records', () => {
-   let joe;
-
-   beforeEach(async () => {
-      joe = new User({ name: 'Joe', postCount: 0 });
-      await joe.save();
-   });
-
+describe('Update record', () => {
    it('A user can have their postcount incremented by 1', async () => {
-      await User.update({ name: 'Joe' }, { $inc: { postCount: 10 } });
+      const joe = new User({ name: 'Joe' });
+      await joe.save();
+
+      await User.update({ name: 'Joe' }, { $inc: { likes: 2 } });
       const user = await User.findOne({ name: 'Joe' });
-      
-      assert(user.postCount === 10);
+
+      assert(user.likes === 2);
    });
-});
+})
